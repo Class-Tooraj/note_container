@@ -27,3 +27,18 @@ class NewNoteSameExistsNote(Exception):
 
 class CorruptedError(Exception):
     pass
+
+class AddTypeError(Exception):
+    pass
+
+class GetDataTypeError(Exception):
+    pass
+
+class AppendingTypeError(Exception):
+    pass
+
+class UpdateTypeError(Exception):
+    pass
+
+class DataTypeError(Exception):
+    pass
