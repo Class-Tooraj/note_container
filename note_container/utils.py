@@ -19,7 +19,7 @@ from typing import Callable, Iterator, Union
 
 
 
-__all__ = ('now', 'perf_counter', 'timstamp_to_str', 'md5', 'sha256', 'sha3_512', 'Crypting', 'RawData')
+__all__ = ('now', 'perf_counter', 'monotonic', 'timstamp_to_str', 'md5', 'sha256', 'sha3_512', 'Crypting', 'RawData')
 # \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\^////////////////////////////// #
 
 # NOW TIME
@@ -29,6 +29,10 @@ def now() -> float:
 # PERF COUNTER
 def perf_counter() -> float:
     return time.perf_counter()
+
+# MONOTONIC TIME
+def monotonic() -> float:
+    return time.monotonic()
 
 # TIME STAMP TO STRING DATE
 def timstamp_to_str(timstamp: float) -> str:
@@ -177,4 +181,4 @@ class RawData:
             return executer.submit(pickle.loads, load).result()
 
 
-__dir__ = ('now', 'perf_counter', 'timstamp_to_str', 'md5', 'sha256', 'sha3_512', 'Crypting', 'RawData')
+__dir__ = ('now', 'perf_counter', 'monotonic', 'timstamp_to_str', 'md5', 'sha256', 'sha3_512', 'Crypting', 'RawData')
