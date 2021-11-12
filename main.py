@@ -6,12 +6,15 @@ __EMAIL__ = "Toorajjahangiri@gmail.com"
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< #
 
 # IMPORT
+import os
 import sys
 import argparse
 
 # IMPORT LOCAL
 from note_container.note import NoteContainer
-from note_container.utils import monotonic
+from note_container.container import Container
+from note_container.utils import monotonic, sha256, sha3_512, md5, now, timstamp_to_str
+from note_container.uniqueize import unique_key
 
 # IMPORT TYPING
 from typing import Sequence
@@ -20,10 +23,298 @@ from typing import Sequence
 
 _PROGRAM = 'Note Container'
 _DESCRIPTION = 'Simple Data Container Based On Zip With Secure Data'
-_VERSION = 'A:0.1'
+_VERSION = 0.1
+
+_OTHER_COMMAND = ('hash', 'now', 'key', 'container', 'archive')
 
 
-def handle(commands: dict) -> None:
+# CONTAINER `ARCHIVE` HANDLE
+def _container_handle(parser: argparse.ArgumentParser) -> int:
+    parser.add_argument(
+        'path',
+        type= str,
+        help= 'Container `Archive` Path'
+    )
+
+    parser.add_argument(
+        '--replace',
+        '-R',
+        default= True,
+        action = 'store_true',
+        help = ''
+    )
+
+    parser.add_argument(
+        '--delete',
+        '-D',
+        type=str,
+        help= 'Delete Member From Container !![NO RECOVERY]!!'
+    )
+
+    parser.add_argument(
+        '--add',
+        '-a',
+        type=str,
+        nargs=2,
+        help= 'Add Member Need `Name` & `TEXT`'
+    )
+
+    parser.add_argument(
+        '--all_member',
+        '-A',
+        default=False,
+        action = 'store_true',
+        help = 'All Container Member Names'
+    )
+
+    parser.add_argument(
+        '--extract',
+        '-e',
+        type= str,
+        nargs= 2,
+        help= 'Extract Member From Container Need `Name` & `Path`'
+    )
+
+    parser.add_argument(
+        '--get',
+        '-g',
+        type=str,
+        help= 'Grab Data From Container Need `Name`'
+    )
+
+    parser.add_argument(
+        '--append',
+        '-ap',
+        type=str,
+        nargs= 2,
+        help= 'Append Data To Existed Member or Create Member Need `Name` & `Data or Path`'
+    )
+
+    parser.add_argument(
+        '--update',
+        '-u',
+        type= str,
+        nargs = 2,
+        help= 'Update `Replace` Data To Existed Member Need `Name` & `Data or Path`'
+    )
+
+    parser.add_argument(
+        '--clear',
+        '-C',
+        default=False,
+        action = 'store_true',
+        help = 'Clear Container From Any Members !![NO RECOVERY]!!'
+    )
+
+    argus = vars(parser.parse_args())
+    container = Container(argus['path'], argus['replace'])
+    work = lambda x: print(x) if argus['verbose'] is True else None
+    t0 = monotonic()
+
+    if x:= argus['add']:
+        try:
+            container[x[0]] = x[1].encode('utf-8')
+            work(f'Add {x[0]} Into Container')
+        except Exception as err:
+            work(f'ADD ERR\t{type(err).__name__}({err})')
+
+    if x:= argus['get']:
+        try:
+            get = container[x]
+            print(f'{x} -> {get}')
+        except Exception as err:
+            work(f'GET ERR\t{type(err).__name__}({err})')
+
+    if x:= argus['extract']:
+        try:
+            path = os.path.abspath(x[1])
+            get = container[x[0]]
+            work(f'GET {x[0]} From Container')
+            try:
+                with open(path, 'wb') as f:
+                    f.write(get)
+            except Exception as err:
+                work(f'WRITE ERR\t{type(err).__name__}({err})')
+        except Exception as err:
+            work(f'GET ERR\t{type(err).__name__}({err})')
+
+    if x:= argus['delete']:
+        del container[x]
+        work(f'DELETED {x} IF EXISTS NOW GONE :)')
+
+    if x:= argus['update']:
+        try:
+            container.update(x[0], x[1].encode('utf-8'))
+            work(f'UPDATE {x[0]} Member Of Container')
+        except Exception as err:
+            work(f'UPDATE ERR\t{type(err).__name__}({err})')
+
+    if argus['clear']:
+        container.clear()
+        work(f'Container `Archive` [{argus["path"]}] CLEARED')
+
+    if argus['time']:
+        print(f'Finished in {monotonic() - t0:.4}')
+
+    return 0
+
+# NOW `TIME` HANDLE
+def _now_handle(order: dict) -> str:
+    if order['timestamp']:
+        return f'{now()}'
+    return timstamp_to_str(now())
+
+# KEY GENERATE HANDLE
+def _key_handle(order: dict) -> str:
+    keys = (unique_key(order['length'], order['packsize'], order['chars']) for _ in range(0, order['many']))
+    if order['file']:
+        path = os.path.abspath(order['file'])
+        with open(path, 'w') as f:
+            f.write('\n'.join(keys))
+        return f"Generated {order['many']} Key Saved To {path}"
+    
+    return '\n'.join(keys)
+
+# HASH HANDLE
+def _hash_handle(order: dict) -> str:
+    alg = order['algorithm']
+    match alg:
+        case 'sha256':
+            if order['file']:
+                path = os.path.abspath(order['input'])
+                with open(path, 'rb') as f:
+                    return sha256(f.read()).hexdigest()
+            return sha256(order['input'].encode('utf-8')).hexdigest()
+        
+        case 'sha3_512':
+            if order['file']:
+                path = os.path.abspath(order['input'])
+                with open(path, 'rb') as f:
+                    return sha3_512(f.read()).hexdigest()
+            return sha3_512(order['input'].encode('utf-8')).hexdigest()
+        
+        case 'md5':
+            if order['file']:
+                path = os.path.abspath(order['input'])
+                with open(path, 'rb') as f:
+                    return md5(f.read()).hexdigest()
+            return md5(order['input'].encode('utf-8')).hexdigest()
+
+# OTHER HANDLE ORDER HANDEL
+def other_handle(cmd: str, parser: argparse.ArgumentParser) -> int:
+    parser.add_argument(
+        'cmd',
+        choices=_OTHER_COMMAND
+    )
+    parser.add_argument(
+        '--time',
+        '-t',
+        default=False,
+        action = 'store_true',
+        help = 'ExecuteTime Options'
+    )
+
+    parser.add_argument(
+        '--verbose',
+        '-v',
+        default=False,
+        action = 'store_true',
+        help = 'Verbose Options'
+    )
+
+    if cmd in ('container', 'archive'):
+        return _container_handle(parser)
+
+    match cmd:
+        case 'now':
+            parser.add_argument(
+                '--timestamp',
+                '-T',
+                default=False,
+                action = 'store_true',
+                help = 'Type Return TimeStamp `float`'
+            )
+        
+        case 'key':
+            parser.add_argument(
+                '--length',
+                '-l',
+                type= int,
+                default=32,
+                help= 'Generate Key With Length Default is `32`'
+            )
+            parser.add_argument(
+                '--packsize',
+                '-p',
+                type= int,
+                default= 16,
+                help= 'Pack Size Generate Unit For Key'
+            )
+            parser.add_argument(
+                '--many',
+                '-m',
+                type = int,
+                default=1,
+                help= 'How Many Key Generate'
+            )
+            parser.add_argument(
+                '--file',
+                '-f',
+                type=str,
+                default=None,
+                help= 'Path File For Save Generated Key'
+            )
+            parser.add_argument(
+                '--chars',
+                '-c',
+                type=str,
+                default=None,
+                help="Custom Characters Valid For Key"
+            )
+        
+        case 'hash':
+            parser.add_argument(
+                'input',
+                type= str,
+                help= 'Hash Algorithm'
+                )
+            parser.add_argument(
+                '--algorithm',
+                '-a',
+                type= str,
+                default='sha256',
+                choices = ('sha256', 'sha3_512', 'md5'),
+                help = 'Hash Algorithm Default Set `sha256` Support `sha3_512`, `sha256`, `md5`'
+            )
+            parser.add_argument(
+                '--file',
+                '-f',
+                default=False,
+                action = 'store_true',
+                help = ''
+            )
+    
+    argus = vars(parser.parse_args())
+    work = lambda x: print(x) if argus['verbose'] else None
+    t0 = monotonic()
+    match cmd:
+        case 'now':
+            work(f'execute now `time` {"-Floating Point-" if argus["timestamp"] is True else "-Human Readable-"} order')
+            handle = _now_handle(argus)
+            print(handle)
+        case 'key':
+            work(f"execute key generator [length {argus['length']}, many {argus['many']}] order")
+            handle = _key_handle(argus)
+            print(handle)
+        case 'hash':
+            work(f"execute hash algorithm {argus['algorithm'].upper()} order")
+            handle = _hash_handle(argus)
+            print(handle)
+    if argus['time']:
+        print(f'Finished in {monotonic() - t0:.4}')
+
+# NOTE_CONTAINER ORDER HANDLE
+def note_handle(commands: dict) -> None:
     t0 = monotonic()
     work = lambda x: print(x) if commands['verbose'] else None
     
@@ -47,7 +338,7 @@ def handle(commands: dict) -> None:
         for it in _active.all_update_list(False):
             print(f"{it[0]} -> {it[1]}")
     
-    if x := commands['history']:
+    if x := commands['update_history']:
         print(f"{x} -> {_active.update_list(x, False)}")
     
     if x := commands['name_filter']:
@@ -126,6 +417,18 @@ def main(argv: Sequence[str] = None) -> int:
         version=f'%(prog)s {_VERSION}'
     )
 
+    if len(argv) > 0:
+        if argv[0].lower() in _OTHER_COMMAND:
+            parser = argparse.ArgumentParser('OTHER ORDER', description='Some Other Functionality')
+            parser.add_argument(
+            '--version',
+            '-V',
+            action = 'version',
+            version=f'%(prog)s {_VERSION}'
+            )
+            cmd = argv.pop(0)
+            return other_handle(cmd, parser)
+
     parser.add_argument(
         'path',
         type= str,
@@ -179,8 +482,8 @@ def main(argv: Sequence[str] = None) -> int:
     )
 
     parser.add_argument(
-        '--history',
-        '-h',
+        '--update_history',
+        '-uh',
         type= str,
         help= 'Object Update History Need `Name`'
     )
@@ -291,7 +594,7 @@ def main(argv: Sequence[str] = None) -> int:
         '--delete',
         '-D',
         type= str,
-        help= 'Delete <Remove> Member From Container Need `Name` [NO RECOVERY]'
+        help= 'Delete <Remove> Member From Container Need `Name` !![NO RECOVERY]!!'
     )
 
     parser.add_argument(
@@ -299,12 +602,12 @@ def main(argv: Sequence[str] = None) -> int:
         '-C',
         default=False,
         action='store_true',
-        help= 'Clear Container From Any Members [NO RECOVERY]'
+        help= 'Clear Container From Any Members !![NO RECOVERY]!!'
     )
 
     parser.add_argument(
         '--hash_algorithm',
-        '-H',
+        '-ha',
         type= str,
         default= 'sha3_512',
         help = 'Hash Algorithm Support `sha256`, `md5`, `sha3_512`'
@@ -325,8 +628,7 @@ def main(argv: Sequence[str] = None) -> int:
     )
 
     argus = vars(parser.parse_args())
-    # print(argus)
-    handle(argus)
+    note_handle(argus)
     return 0
 
 
