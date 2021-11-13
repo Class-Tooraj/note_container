@@ -118,6 +118,13 @@ def _container_handle(parser: argparse.ArgumentParser) -> int:
         except Exception as err:
             work(f'ADD ERR\t{type(err).__name__}({err})')
 
+    if x:= argus['append']:
+        try:
+            container.append(x[0], x[1].encode('utf-8'))
+            work(f'APPEND {x[0]} Into Container')
+        except Exception as err:
+            work(f'APPEND ERR\t{type(err).__name__}({err})')
+
     if x:= argus['get']:
         try:
             get = container[x]
@@ -392,7 +399,7 @@ def note_handle(commands: dict) -> None:
         work(f"Appending Section `{x[0]}`")
 
     if x := commands['delete']:
-        _active.delete(x)
+        del _active[x]
         work(f"Deleted `{x}` From Container")
 
     if x := commands['clear']:
