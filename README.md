@@ -2,7 +2,15 @@
 ### Description:
 #### Note Container Handle Your Notes & Sections, Powered by Container Use Zip. Other App Active (`hash`, `now`, `key`,`container` or `archive`). Default Run Active in Note Container Command For Other App Type First Argument App Name You Want Be Use.  
 ---
+## APPLICATION FUNCTINALITY
+
+Default Run Note Container See `NOTE CONTAINER`, If Need Other Functionality `container`, `hash`, `key`, `now` Passed Name as First Arguments App You Want Run.
+
+---
+
 ## NOTE CONTAINER:
+
+#### Note Container Store Your Data `Note` or `Sections` In Container
 
 Store Your Data `Text` or `Section` In Container
 
@@ -63,6 +71,10 @@ Store Your Data `Text` or `Section` In Container
 > > **--time, -t :** Execute Order Time
 > >
 > > **--verbose, -v :** Verbose
+
+#### What is Section ?? Section Is Key Value Object Exactly Python Dictionary Follow  Python Dictionary Syntax as String . Sections Is Ready :)
+
+Section : {'One': 1, 1:'One', 'byte': b'This Bytes', 'list': [1, 2, 3 , 'A', b'x']}
 
 ---
 
