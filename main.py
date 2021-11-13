@@ -276,7 +276,7 @@ def other_handle(cmd: str, parser: argparse.ArgumentParser) -> int:
             parser.add_argument(
                 'input',
                 type= str,
-                help= 'Hash Algorithm'
+                help= 'Input String For Hash'
                 )
             parser.add_argument(
                 '--algorithm',
@@ -291,7 +291,7 @@ def other_handle(cmd: str, parser: argparse.ArgumentParser) -> int:
                 '-f',
                 default=False,
                 action = 'store_true',
-                help = ''
+                help = 'If Input Is File Path For File Hash'
             )
     
     argus = vars(parser.parse_args())
