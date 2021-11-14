@@ -23,7 +23,7 @@ from typing import Sequence
 
 _PROGRAM = 'Note Container'
 _DESCRIPTION = 'Simple Data Container Based On Zip With Secure Data'
-_VERSION = 0.1
+_VERSION = 0.2
 
 _OTHER_COMMAND = ('hash', 'now', 'key', 'container', 'archive')
 
