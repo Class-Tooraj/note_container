@@ -1,14 +1,16 @@
+### IN THE NAME OF GOD
+---
 # NOTE CONTAINER
 ### Description:
 #### Note Container Handle Your Notes & Sections, Powered by Container Use Zip. Other App Active (`hash`, `now`, `key`,`container` or `archive`). Default Run Active in Note Container Command For Other App Type First Argument App Name You Want Be Use.  
----
-## APPLICATION FUNCTINALITY
+
+## APPLICATION FUNCTIONALITY
 
 Default Run Note Container See `NOTE CONTAINER`, If Need Other Functionality `container`, `hash`, `key`, `now` Passed Name as First Arguments App You Want Run.
 
 ---
 
-## NOTE CONTAINER:
+## NOTE CONTAINER :
 
 #### Note Container Store Your Data `Note` or `Sections` In Container
 
@@ -74,7 +76,7 @@ Store Your Data `Text` or `Section` In Container
 
 #### What is Section ?? Section Is Key Value Object Exactly Python Dictionary Follow  Python Dictionary Syntax as String . Sections Is Ready :)
 
-Section : {'One': 1, 1:'One', 'byte': b'This Bytes', 'list': [1, 2, 3 , 'A', b'x']}
+Section example : *{'One': 1, 1:'One', 'byte': b'This Bytes', 'list': [1, 2, 3 , 'A', b'x']}*
 
 ---
 
@@ -136,7 +138,7 @@ Switch Command `hash`
 
 > **Commands :**
 >
-> > **POSITINAL :**
+> > **POSITIONAL :**
 > >
 > > **input :** Input String For Hash Or File Path For Hashed File
 > >
@@ -159,4 +161,99 @@ Switch Command `now`
 > > **--timestamp, -T :** Return Float Time
 
 ---
+
+## Access Module
+
+**All :**
+
+* **note** *Main Note Container Class*
+* **exceptions** *Note Container Exceptions*
+* **uniqueize** *Unique Key Generator*
+* **utils** *Utility Note Container Use*
+* **container** *Container Handler*
+* **zip_man** ** *Updatable Zip `replace`, `remove`*
+
+> **Inside :**
+>
+> > * **note :**
+> >
+> > > * ***NoteContainer*** - class `Note Container Application`
+> >
+> > * **exceptions :**
+> >
+> > > * ***MemberNotExistsError*** - instance exception `member not exists if need member exists`
+> > >
+> > > * ***MemberExistsError*** - instance exception `member exists if need not exists`
+> > >
+> > > * ***NameExistsError*** - instance exception `name exists if need name not exists`
+> > >
+> > > * ***NameNotExistsError*** - instance exception `name not exists if need name exists`
+> > >
+> > > * ***NewNoteSameExistsNote*** - instance exception `updte if note same existed note`
+> > >
+> > > * ***CorruptedError*** - instance exception `connection or any connect container error`
+> > >
+> > > * ***AddTypeError*** - instance exception `add data with wrong type`
+> > >
+> > > * ***GetDataTypeError*** - instance exception `get data with wrong type`
+> > >
+> > > * ***AppendingTypeError*** - instance exception `append data with wrong type`
+> > >
+> > > * ***UpdateTypeError*** - instance exception `update data with wrong type`
+> > >
+> > > * ***DataTypeError*** - instance exception `type wrong`
+> >
+> > * **uniqueize :**
+> >
+> > > * ***rand_char*** - function `chose random character`
+> > >
+> > > * ***unique_key*** - function `generate unique key`
+> >
+> > * **utils :**
+> >
+> > > * ***now*** - function `timestamp`
+> > >
+> > > * ***perf_counter*** - function `perf counter time`
+> > >
+> > > * ***monotonic*** - function `monotoic time`
+> > >
+> > > * ***timestamp_to_str*** - function `time stamp to human readble time`
+> > >
+> > > * ***md5*** - function `hash MD5 algorithm`
+> > >
+> > > * ***sha256*** - function `hash SHA256 algorithm`
+> > >
+> > > * ***sha3_512*** - function `hash SHA3_512 algorithm`
+> > >
+> > > * ***Crypting*** - class `secure bytes encrypt or decrypt with key`
+> > >
+> > > * ***RawData*** - class `picklize data`
+> >
+> > * **container :**
+> >
+> > > * ***Container*** - class `pythonic container use UZip`
+> >
+> > * **zip_man :**
+> >
+> > > * ***UZip*** - instance ZipFile `Updatble Zip Archive Chiled ZipFile`
+> > >
+> > > * ***ZIP_BZIP2*** - zip compress type `see zipfile doc`
+> > >
+> > > * ***ZIP64_LIMIT*** - zip compress type `see zipfile doc`
+> > >
+> > > * ***ZIP_LZMA*** - zip compress type `see zipfile doc`
+> > >
+> > > * ***ZIP_STORED*** - zip compress type `see zipfile doc`
+> > >
+> > > * ***ZIP_DEFLATED*** - zip compress type `see zipfile doc`
+> > >
+> > > * ***ZipInfo*** - zip info type `see zipfile doc`
+
+---
+
+[Source]: https://github.com/Class-Tooraj/note_container	"Note Container Source Code"
+
+author  *ToorajJahangiri*
+
+email *Toorajjahangiri@gmail.com*
 
