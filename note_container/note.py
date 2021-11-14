@@ -13,11 +13,11 @@ import concurrent.futures
 # IMPORT LOCAL
 try:
     from container import Container
-    from utils import RawData, sha256, md5, now, timstamp_to_str
+    from utils import RawData, sha256, md5, now, timestamp_to_str
     from exceptions import *
 except ImportError:
     from note_container.container import Container
-    from note_container.utils import RawData, sha256, md5, now, timstamp_to_str
+    from note_container.utils import RawData, sha256, md5, now, timestamp_to_str
     from note_container.exceptions import *
 
 # IMPORT TYPING
@@ -158,7 +158,7 @@ class NoteContainer:
                 raise NameNotExistsError
         match timestamp:
             case False:
-                return [(timstamp_to_str(t), o, n) for t, o, n in info['update']]
+                return [(timestamp_to_str(t), o, n) for t, o, n in info['update']]
             case True:
                 return info['update']
 
