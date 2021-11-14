@@ -58,8 +58,17 @@ class NoteContainer:
         # READY CONTAINER
         # LOAD OR CREATE HEADER
         match self.HEADER in self.__container:
+            
             case True:
-                self.__header = self.__load(self.__container['*'])
+                try:
+                    self.__header = self.__load(self.__container['*'])
+                    if self.__header.get('info', None) is None:
+                        del self
+                        raise CorruptedError
+                except (BaseException, Exception):
+                    del self
+                    raise CorruptedError
+            
             case False:
                 self.__head_make()
                 self.__ready()
