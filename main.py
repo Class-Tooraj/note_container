@@ -13,7 +13,7 @@ import argparse
 # IMPORT LOCAL
 from note_container.note import NoteContainer
 from note_container.container import Container
-from note_container.utils import monotonic, sha256, sha3_512, md5, now, timstamp_to_str
+from note_container.utils import monotonic, sha256, sha3_512, md5, now, timestamp_to_str
 from note_container.uniqueize import unique_key
 
 # IMPORT TYPING
@@ -169,7 +169,7 @@ def _container_handle(parser: argparse.ArgumentParser) -> int:
 def _now_handle(order: dict) -> str:
     if order['timestamp']:
         return f'{now()}'
-    return timstamp_to_str(now())
+    return timestamp_to_str(now())
 
 # KEY GENERATE HANDLE
 def _key_handle(order: dict) -> str:
