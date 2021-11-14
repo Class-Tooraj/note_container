@@ -19,7 +19,7 @@ from typing import Callable, Iterator, Union
 
 
 
-__all__ = ('now', 'perf_counter', 'monotonic', 'timstamp_to_str', 'md5', 'sha256', 'sha3_512', 'Crypting', 'RawData')
+__all__ = ('now', 'perf_counter', 'monotonic', 'timestamp_to_str', 'md5', 'sha256', 'sha3_512', 'Crypting', 'RawData')
 # \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\^////////////////////////////// #
 
 # NOW TIME
@@ -35,7 +35,7 @@ def monotonic() -> float:
     return time.monotonic()
 
 # TIME STAMP TO STRING DATE
-def timstamp_to_str(timstamp: float) -> str:
+def timestamp_to_str(timstamp: float) -> str:
     return datetime.fromtimestamp(timstamp).strftime('%d/%m/%Y-%H:%M:%S')
 
 # MD5 HASH
@@ -181,4 +181,4 @@ class RawData:
             return executer.submit(pickle.loads, load).result()
 
 
-__dir__ = ('now', 'perf_counter', 'monotonic', 'timstamp_to_str', 'md5', 'sha256', 'sha3_512', 'Crypting', 'RawData')
+__dir__ = ('now', 'perf_counter', 'monotonic', 'timestamp_to_str', 'md5', 'sha256', 'sha3_512', 'Crypting', 'RawData')
